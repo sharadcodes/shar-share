@@ -1,2 +1,5 @@
 /received_files
 /venv
+/build
+/dist
+*.spec
