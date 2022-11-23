@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SHAR-SHARE | Developed by sharadcodes</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: monospace;
+      }
+
+      main {
+        margin: 0 auto;
+        max-width: 600px;
+      }
+
+      header {
+        padding: 4rem 0 2rem 0;
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      main > h2 {
+        margin-bottom: 2rem;
+      }
+
+      #online_nodes {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .node {
+        display: block;
+        padding: 1rem;
+        background: lightgray;
+        border-radius: 8px;
+      }
+
+      * {
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <header>
+        <a href="/"><h1>SHAR-SHARE: Share files over network easily</h1></a>
+        <br />
+        <h2 style="color: blue">IP: {{ ip_addr }}</h2>
+        <br />
+        <p>Developed by sharadcodes</p>
+      </header>
+      <h2>SELECT FILES</h2>
+      <p id="msg"></p>
+      <br />
+      <form
+        method="post"
+        enctype="multipart/form-data"
+        id="send_files_form"
+        action=""
+      >
+        <input type="file" name="files" multiple />
+        <button type="submit">SEND FILES</button>
+      </form>
+    </main>
+    <script defer>
+      var form = document.getElementById("send_files_form");
+
+      form.onsubmit = async (e) => {
+        e.preventDefault();
+        const form = e.currentTarget;
+        const url = form.action;
+
+        try {
+          const formData = new FormData(form);
+          const response = await fetch(url, {
+            method: "POST",
+            body: formData,
+          });
+          if (response.status === 200) {
+            const data = await response.json();
+            document.querySelector("#msg").innerHTML = `${
+              data?.message + " by " + data?.receiving_node
+            }<br/><br/>${data?.filenames?.map((i) => i + " ")}`;
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+    </script>
+  </body>
+</html>
