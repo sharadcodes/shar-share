@@ -17,7 +17,7 @@ hostname = None
 def index():
     global ip
     print(ip)
-    return render_template("index.html", ip_addr=ip)
+    return render_template("index.html", ip_addr=ip, host=hostname)
 
 
 @app.route("/api/v1")
@@ -36,7 +36,7 @@ def receive():
     global r_flag
     filenames = []
     if request.method == "GET":
-        return render_template("send.html", ip_addr=ip)
+        return render_template("send.html", ip_addr=ip, host=hostname)
     if request.method == "POST" and r_flag == True:
         for f in request.files.getlist(key="files"):
             filename = secure_filename(f.filename)
